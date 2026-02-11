@@ -2,8 +2,6 @@ from django.db import models
 
 
 class NewsCategory(models.Model):
-    # Categorias de notícias
-
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
@@ -19,21 +17,36 @@ class NewsCategory(models.Model):
 
 
 class NewsArticle(models.Model):
-    # Notícias sobre agricultura
-
     title = models.CharField(max_length=300)
-    summary = models.TextField(help_text="Resumo ou descrição da notícia")
+
+    summary = models.TextField(blank=True, help_text="Resumo ou descrição da notícia")
+
     url = models.URLField(unique=True, help_text="Link para a notícia original")
+
     source = models.CharField(max_length=100, help_text="Fonte da notícia")
-    author = models.CharField(max_length=200, blank=True, help_text="Autor da notícia")
-    image_url = models.URLField(blank=True, help_text="URL da imagem de capa")
+
+    author = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        default="Redação",
+        help_text="Autor da notícia",
+    )
+
+    image_url = models.TextField(
+        blank=True, null=True, help_text="URL da imagem de capa"
+    )
+
     published_at = models.DateTimeField(help_text="Data de publicação original")
+
     categories = models.ManyToManyField(
         NewsCategory, related_name="articles", blank=True
     )
+
     is_featured = models.BooleanField(
         default=False, help_text="Destacar na página inicial"
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -51,8 +64,6 @@ class NewsArticle(models.Model):
 
 
 class NewsSource(models.Model):
-    # Fontes de notícias (RSS feeds, APIs, etc)
-
     SOURCE_TYPES = [
         ("rss", "RSS Feed"),
         ("api", "API"),

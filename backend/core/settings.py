@@ -18,13 +18,14 @@ SECRET_KEY = "django-insecure-n)a&h1$gx*fa*rs9%a0&$(!zr=ze1fggio@ly*b08usl*5vh%$
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 CITY_LAT = os.getenv("CITY_LAT")
 CITY_LON = os.getenv("CITY_LON")
+NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-change-this-in-production")
 DEBUG = os.getenv("DEBUG", "True") == "True"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
@@ -35,22 +36,22 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_extensions",
     "rest_framework",
     "corsheaders",
     "apps.news",
-    "apps.prices",
     "apps.weather",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
