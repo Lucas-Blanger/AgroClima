@@ -13,12 +13,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-n)a&h1$gx*fa*rs9%a0&$(!zr=ze1fggio@ly*b08usl*5vh%$"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 CITY_LAT = os.getenv("CITY_LAT")
 CITY_LON = os.getenv("CITY_LON")
 NEWS_API_KEY = os.getenv("NEWS_API_KEY")
+AUTO_DAILY_UPDATE_ENABLED = (
+    os.getenv("AUTO_DAILY_UPDATE_ENABLED", "True").lower() == "true"
+)
+DAILY_UPDATE_TIME = os.getenv("DAILY_UPDATE_TIME", "06:00")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

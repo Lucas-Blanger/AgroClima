@@ -33,6 +33,8 @@ node_modules/
 # Misc
 *.bak
 *.tmp
+.daily_update_state.json
+.daily_update.lock
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
