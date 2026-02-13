@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
-import { getCurrentWeather, getForecast } from "../api/weather";
-import { WeatherCard } from "../components/WeatherCard";
+﻿import { useEffect, useState } from "react";
+import {
+  getCurrentWeather,
+  getForecast,
+  type WeatherForecastDay,
+} from "../api/weather";
 import { ForecastCard } from "../components/ForecastCard";
+import { WeatherCard } from "../components/WeatherCard";
 import { WeatherChart } from "../components/WeatherChart";
 import type { Weather } from "../types/weather";
 
-interface Forecast {
-  date: string;
-  temp_min: number;
-  temp_max: number;
-  icon: string;
+interface Forecast extends WeatherForecastDay {
   temperature: number;
-  rain?: number;
 }
 
 export default function Weather() {
@@ -24,15 +23,24 @@ export default function Weather() {
     const fetchWeatherData = async () => {
       try {
         setLoading(true);
+
         const [weatherData, forecastData] = await Promise.all([
           getCurrentWeather(),
           getForecast(),
         ]);
+
+        const normalizedForecast = forecastData
+          .map((day) => ({
+            ...day,
+            temperature: (day.temp_max + day.temp_min) / 2,
+          }))
+          .sort((first, second) => first.date.localeCompare(second.date));
+
         setCurrentWeather(weatherData);
-        setForecast(forecastData);
+        setForecast(normalizedForecast);
         setError(null);
       } catch (err) {
-        setError("Erro ao carregar dados de tempo");
+        setError("Erro ao carregar dados de clima");
         console.error(err);
       } finally {
         setLoading(false);
@@ -43,42 +51,55 @@ export default function Weather() {
   }, []);
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">
-        Previsão do Tempo
-      </h1>
+    <section className="space-y-8">
+      <header className="relative overflow-hidden rounded-3xl border border-cyan-100 bg-gradient-to-br from-sky-900 via-cyan-800 to-teal-800 px-6 py-8 text-white shadow-xl sm:px-8">
+        <div className="absolute -left-16 top-0 h-44 w-44 rounded-full bg-sky-300/20 blur-3xl" />
+        <div className="absolute -bottom-20 right-0 h-56 w-56 rounded-full bg-cyan-100/15 blur-3xl" />
+        <p className="relative text-sm uppercase tracking-[0.2em] text-cyan-100">Clima diario</p>
+        <h1 className="relative mt-3 text-3xl font-bold sm:text-4xl">Previsao do tempo</h1>
+        <p className="relative mt-3 max-w-2xl text-sm text-cyan-50 sm:text-base">
+          Acompanhe os proximos dias com temperaturas, chuva e tendencia geral.
+        </p>
+      </header>
 
       {loading && (
-        <p className="text-center text-gray-500">
-          Carregando dados de tempo...
-        </p>
+        <div className="rounded-2xl border border-slate-200 bg-white/90 p-8 text-center text-slate-500 shadow-sm">
+          Carregando dados de clima...
+        </div>
       )}
-      {error && <p className="text-center text-red-500">{error}</p>}
+
+      {error && (
+        <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-center text-rose-700">
+          {error}
+        </div>
+      )}
 
       {currentWeather && (
         <>
           <WeatherCard data={currentWeather} />
 
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">
-              Previsão de 7 Dias
-            </h2>
+          <div className="rounded-2xl border border-emerald-100 bg-white/95 p-6 shadow-sm">
+            <div className="mb-5 flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-slate-900">Previsao para os proximos dias</h2>
+              <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+                {forecast.length} dias
+              </span>
+            </div>
+
             {forecast.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
-                {forecast.map((day, index) => (
-                  <ForecastCard key={index} data={day} />
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-4 xl:grid-cols-7">
+                {forecast.map((day) => (
+                  <ForecastCard key={day.date} data={day} />
                 ))}
               </div>
             ) : (
-              <p className="text-center text-gray-500">
-                Nenhuma previsão disponível
-              </p>
+              <p className="text-center text-slate-500">Nenhuma previsao disponivel.</p>
             )}
           </div>
 
           {forecast.length > 0 && <WeatherChart data={forecast} />}
         </>
       )}
-    </div>
+    </section>
   );
 }

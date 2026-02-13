@@ -1,11 +1,25 @@
 import { api } from "./axios";
+import type { NewsArticle } from "../types/news";
 
-export const getArticles = async () => {
+interface PaginatedResponse<T> {
+  results: T[];
+}
+
+export const getArticles = async (): Promise<NewsArticle[]> => {
   const { data } = await api.get("/api/news/articles/");
-  return data;
+
+  if (Array.isArray(data)) {
+    return data as NewsArticle[];
+  }
+
+  if (data && Array.isArray((data as PaginatedResponse<NewsArticle>).results)) {
+    return (data as PaginatedResponse<NewsArticle>).results;
+  }
+
+  return [] as NewsArticle[];
 };
 
-export const getFeatured = async () => {
+export const getFeatured = async (): Promise<NewsArticle[]> => {
   const { data } = await api.get("/api/news/articles/featured/");
-  return data;
+  return data as NewsArticle[];
 };
