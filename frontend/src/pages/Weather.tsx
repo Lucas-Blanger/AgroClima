@@ -55,10 +55,14 @@ export default function Weather() {
       <header className="relative overflow-hidden rounded-3xl border border-cyan-100 bg-gradient-to-br from-sky-900 via-cyan-800 to-teal-800 px-6 py-8 text-white shadow-xl sm:px-8">
         <div className="absolute -left-16 top-0 h-44 w-44 rounded-full bg-sky-300/20 blur-3xl" />
         <div className="absolute -bottom-20 right-0 h-56 w-56 rounded-full bg-cyan-100/15 blur-3xl" />
-        <p className="relative text-sm uppercase tracking-[0.2em] text-cyan-100">Clima diario</p>
-        <h1 className="relative mt-3 text-3xl font-bold sm:text-4xl">Previsao do tempo</h1>
+        <p className="relative text-sm uppercase tracking-[0.2em] text-cyan-100">
+          Clima diario
+        </p>
+        <h1 className="relative mt-3 text-3xl font-bold sm:text-4xl">
+          Previsao do tempo
+        </h1>
         <p className="relative mt-3 max-w-2xl text-sm text-cyan-50 sm:text-base">
-          Acompanhe os proximos dias com temperaturas, chuva e tendencia geral.
+          Acompanhe os próximos dias com temperaturas, chuva e tendência geral.
         </p>
       </header>
 
@@ -80,7 +84,9 @@ export default function Weather() {
 
           <div className="rounded-2xl border border-emerald-100 bg-white/95 p-6 shadow-sm">
             <div className="mb-5 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-slate-900">Previsao para os proximos dias</h2>
+              <h2 className="text-xl font-semibold text-slate-900">
+                Previsao para os proximos dias
+              </h2>
               <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
                 {forecast.length} dias
               </span>
@@ -93,7 +99,9 @@ export default function Weather() {
                 ))}
               </div>
             ) : (
-              <p className="text-center text-slate-500">Nenhuma previsao disponivel.</p>
+              <p className="text-center text-slate-500">
+                Nenhuma previsão disponível.
+              </p>
             )}
           </div>
 

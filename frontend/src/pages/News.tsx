@@ -16,7 +16,7 @@ export default function News() {
         setArticles(data);
         setError(null);
       } catch (err) {
-        setError("Erro ao carregar noticias");
+        setError("Erro ao carregar notícias");
         console.error(err);
       } finally {
         setLoading(false);
@@ -35,16 +35,17 @@ export default function News() {
           AgroClima Feed
         </p>
         <h1 className="relative mt-3 text-3xl font-bold sm:text-4xl">
-          Noticias de agricultura
+          Noticías da agricultura
         </h1>
         <p className="relative mt-3 max-w-2xl text-sm text-emerald-50 sm:text-base">
-          Conteudo atualizado para acompanhar clima, mercado e tecnologia no campo.
+          Conteúdo atualizado para acompanhar clima, mercado e tecnologia no
+          campo.
         </p>
       </header>
 
       {loading && (
         <div className="rounded-2xl border border-slate-200 bg-white/90 p-8 text-center text-slate-500 shadow-sm">
-          Carregando noticias...
+          Carregando noticías...
         </div>
       )}
 
@@ -56,7 +57,7 @@ export default function News() {
 
       {!loading && !error && articles.length === 0 && (
         <div className="rounded-2xl border border-slate-200 bg-white/90 p-8 text-center text-slate-500 shadow-sm">
-          Nenhuma noticia disponivel no momento.
+          Nenhuma noticía disponível no momento.
         </div>
       )}
 

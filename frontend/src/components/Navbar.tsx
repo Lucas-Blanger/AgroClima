@@ -14,9 +14,11 @@ export function Navbar() {
     <nav className="sticky top-0 z-30 border-b border-emerald-100/90 bg-white/85 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
         <div className="flex items-center gap-3">
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-sm font-bold text-white shadow-md">
-            AC
-          </span>
+          <img
+            src="/logo.png"
+            alt="Logo AgroClima"
+            className="h-10 w-10 rounded-xl object-cover shadow-md"
+          />
           <div>
             <p className="text-lg font-bold text-slate-900">AgroClima</p>
             <p className="text-xs text-slate-500">Campinas do Sul</p>
@@ -27,8 +29,11 @@ export function Navbar() {
           <NavLink to="/" className={({ isActive }) => linkClassName(isActive)}>
             Dashboard
           </NavLink>
-          <NavLink to="/news" className={({ isActive }) => linkClassName(isActive)}>
-            Noticias
+          <NavLink
+            to="/news"
+            className={({ isActive }) => linkClassName(isActive)}
+          >
+            Notícias
           </NavLink>
           <NavLink
             to="/weather"
