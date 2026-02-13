@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
     "corsheaders",
+    "apps.health",
     "apps.news",
     "apps.weather",
     "apps.prices",
