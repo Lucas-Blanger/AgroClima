@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "apps.news",
     "apps.weather",
+    "apps.prices",
 ]
 
 MIDDLEWARE = [

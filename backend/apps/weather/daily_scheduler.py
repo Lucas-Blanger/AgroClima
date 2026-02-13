@@ -64,15 +64,23 @@ def _run_updates_if_due():
         if _read_last_run_date() == today.isoformat():
             return
 
-        logger.info("Running automatic daily update for weather and news.")
-        call_command("update_weather")
-        call_command("update_news")
+        logger.info("Running automatic daily update for weather, news and prices.")
+        _run_command_with_logging("update_weather")
+        _run_command_with_logging("update_news")
+        _run_command_with_logging("update_prices")
         _write_last_run_date(today.isoformat())
         logger.info("Automatic daily update finished successfully.")
     except Exception:
         logger.exception("Automatic daily update failed.")
     finally:
         _release_lock_file()
+
+
+def _run_command_with_logging(command_name):
+    try:
+        call_command(command_name)
+    except Exception:
+        logger.exception("Automatic daily command failed: %s", command_name)
 
 
 def _read_target_time():
