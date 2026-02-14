@@ -1,5 +1,6 @@
 ﻿import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
+import { Footer } from "./components/Footer";
 import Dashboard from "./pages/Dashboard";
 import News from "./pages/News";
 import Weather from "./pages/Weather";
@@ -17,6 +18,7 @@ function App() {
             <Route path="/weather" element={<Weather />} />
           </Routes>
         </main>
+        <Footer />
       </div>
     </BrowserRouter>
   );
