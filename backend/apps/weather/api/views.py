@@ -12,6 +12,8 @@ from apps.weather.api.serializers import (
 
 
 class WeatherViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = WeatherForecast.objects.all()
+    serializer_class = WeatherForecastSerializer
 
     # API endpoints para dados climáticos
     @action(detail=False, methods=["get"])

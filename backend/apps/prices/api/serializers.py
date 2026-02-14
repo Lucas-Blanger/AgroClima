@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.openapi import OpenApiTypes
 from apps.prices.models import Product, PriceSource, Price, Alert
 
 
@@ -20,6 +22,9 @@ class ProductSerializer(serializers.ModelSerializer):
             "created_at",
         ]
 
+    @extend_schema_field(
+        serializers.DictField(child=serializers.CharField(), allow_null=True)
+    )
     def get_latest_price(self, obj):
         latest = obj.get_latest_price()
         if latest:
@@ -30,6 +35,9 @@ class ProductSerializer(serializers.ModelSerializer):
             }
         return None
 
+    @extend_schema_field(
+        serializers.DictField(child=serializers.CharField(), allow_null=True)
+    )
     def get_price_trend(self, obj):
         history = obj.get_price_history(days=7)
         if history.count() >= 2:
@@ -63,6 +71,7 @@ class PriceSourceSerializer(serializers.ModelSerializer):
             "total_prices",
         ]
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_total_prices(self, obj):
         return obj.prices.count()
 
@@ -94,6 +103,9 @@ class PriceSerializer(serializers.ModelSerializer):
             "created_at",
         ]
 
+    @extend_schema_field(
+        serializers.DictField(child=serializers.CharField(), allow_null=True)
+    )
     def get_variation(self, obj):
         return obj.get_variation()
 
