@@ -7,9 +7,9 @@ from collections import defaultdict
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.utils import timezone
-from datetime import datetime, timedelta
+from datetime import datetime
 import requests
-from apps.weather.models import WeatherCurrent, WeatherForecast, WeatherAlert
+from apps.weather.models import WeatherCurrent, WeatherForecast
 
 
 class Command(BaseCommand):
@@ -38,7 +38,7 @@ class Command(BaseCommand):
 
     def update_current_weather(self, api_key, lat, lon):
         # Atualiza dados climáticos atuais
-        url = f"https://api.openweathermap.org/data/2.5/weather"
+        url = "https://api.openweathermap.org/data/2.5/weather"
         params = {
             "lat": lat,
             "lon": lon,
