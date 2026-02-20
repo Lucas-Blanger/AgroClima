@@ -1,4 +1,4 @@
-# AgroClima API
+# AgroClima
 
 > API RESTful completa para monitoramento climático agrícola com dados de clima, notícias e preços de commodities
 
