@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "apps.news",
     "apps.weather",
     "apps.prices",
+    "apps.agriculture",
 ]
 
 MIDDLEWARE = [
