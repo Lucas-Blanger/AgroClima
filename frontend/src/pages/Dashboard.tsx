@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getArticles, getFeatured } from "../api/news";
 import { getLatestPrices } from "../api/prices";
+import { getInsights } from "../api/agriculture";
 import {
   getCurrentWeather,
   getForecast,
@@ -12,6 +13,7 @@ import { NewsCard } from "../components/NewsCard";
 import type { NewsArticle } from "../types/news";
 import type { DailyPriceQuote } from "../types/prices";
 import type { Weather } from "../types/weather";
+import type { AgricultureInsights } from "../types/agriculture";
 import { formatDate } from "../utils/date";
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -168,6 +170,8 @@ export default function Dashboard() {
   const [pricesLoading, setPricesLoading] = useState(true);
   const [news, setNews] = useState<NewsArticle[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
+  const [insights, setInsights] = useState<AgricultureInsights | null>(null);
+  const [insightsLoading, setInsightsLoading] = useState(true);
 
   useEffect(() => {
     getCurrentWeather()
@@ -183,6 +187,11 @@ export default function Dashboard() {
       .then((data) => setPrices(data))
       .catch(() => setPrices([]))
       .finally(() => setPricesLoading(false));
+
+    getInsights()
+      .then(setInsights)
+      .catch(() => setInsights(null))
+      .finally(() => setInsightsLoading(false));
 
     const fetchNews = async () => {
       try {
@@ -300,6 +309,77 @@ export default function Dashboard() {
           )}
         </Card>
       </div>
+
+      <Card title="Insights agricolas">
+        {insightsLoading ? (
+          <p className="text-slate-500">Carregando insights...</p>
+        ) : insights ? (
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm font-semibold text-slate-700">
+                Recomendacoes
+              </p>
+              {insights.recommendations?.recommended_crops?.length ? (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {insights.recommendations.recommended_crops.map((crop) => (
+                    <span
+                      key={crop}
+                      className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700"
+                    >
+                      {crop}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="mt-2 text-sm text-slate-500">
+                  Sem recomendacoes no momento.
+                </p>
+              )}
+              <p className="mt-2 text-xs text-slate-500">
+                Estacao: {insights.recommendations?.season ?? "indisponivel"}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-sm font-semibold text-slate-700">Alertas</p>
+              {insights.alerts.length > 0 ? (
+                <ul className="mt-2 space-y-2 text-sm text-slate-600">
+                  {insights.alerts.map((alert, index) => (
+                    <li
+                      key={`${alert.type}-${index}`}
+                      className="rounded-lg border border-amber-100 bg-amber-50/50 px-3 py-2"
+                    >
+                      <span className="font-semibold text-amber-800">
+                        {alert.type}
+                      </span>{" "}
+                      - {alert.message}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-2 text-sm text-slate-500">
+                  Sem alertas no momento.
+                </p>
+              )}
+            </div>
+
+            <div>
+              <p className="text-sm font-semibold text-slate-700">Seca</p>
+              {insights.drought ? (
+                <p className="mt-2 text-sm text-rose-700">
+                  {insights.drought.message}
+                </p>
+              ) : (
+                <p className="mt-2 text-sm text-slate-500">
+                  Sem indicios de seca.
+                </p>
+              )}
+            </div>
+          </div>
+        ) : (
+          <p className="text-slate-500">Sem dados de insights.</p>
+        )}
+      </Card>
 
       <div className="rounded-2xl border border-emerald-100 bg-white/95 p-6 shadow-sm">
         <div className="mb-5 flex items-center justify-between">
