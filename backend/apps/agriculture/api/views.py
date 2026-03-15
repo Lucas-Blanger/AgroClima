@@ -52,12 +52,13 @@ class AgricultureInsightsViewSet(APIView):
         alerts = detect_weather_alerts(weather_context)
 
         start_date = today - timedelta(days=days)
-        history = (
-            WeatherForecast.objects.filter(date__gte=start_date, date__lte=today)
-            .order_by("-date")[:days]
-        )
+        history = WeatherForecast.objects.filter(
+            date__gte=start_date, date__lte=today
+        ).order_by("-date")[:days]
 
-        last_days = [{"date": item.date, "rain": float(item.rain or 0)} for item in history]
+        last_days = [
+            {"date": item.date, "rain": float(item.rain or 0)} for item in history
+        ]
         drought = detect_drought(last_days) if last_days else None
 
         recommendations = None
@@ -74,3 +75,35 @@ class AgricultureInsightsViewSet(APIView):
                 "history_records": len(last_days),
             }
         )
+
+
+class AgricultureRecommendationsViewSet(APIView):
+    def get(self, request):
+        current = None
+        try:
+            current = WeatherCurrent.objects.latest("updated_at")
+        except WeatherCurrent.DoesNotExist:
+            current = None
+
+        if current:
+            weather_context = {
+                "temperature": current.temperature,
+                "precipitation": current.rain_1h or current.rain_3h or 0,
+                "wind_speed": current.wind_speed,
+                "rain": current.rain_1h or current.rain_3h or 0,
+            }
+        else:
+            weather_context = {
+                "temperature": None,
+                "precipitation": None,
+                "wind_speed": None,
+                "rain": None,
+            }
+
+        recommendations = recommend_crops(weather_context)
+        if not recommendations["recommended_crops"]:
+            recommendations["message"] = (
+                "Nenhuma cultura recomendada com base nas condições atuais."
+            )
+
+        return Response({"recommendations": recommendations})
