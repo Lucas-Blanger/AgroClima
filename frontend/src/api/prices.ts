@@ -6,13 +6,16 @@ interface PaginatedResponse<T> {
 }
 
 export const getLatestPrices = async (): Promise<DailyPriceQuote[]> => {
-  const { data } = await api.get("/api/prices/prices/latest/");
+  const { data } = await api.get("/prices/prices/latest/");
 
   if (Array.isArray(data)) {
     return data as DailyPriceQuote[];
   }
 
-  if (data && Array.isArray((data as PaginatedResponse<DailyPriceQuote>).results)) {
+  if (
+    data &&
+    Array.isArray((data as PaginatedResponse<DailyPriceQuote>).results)
+  ) {
     return (data as PaginatedResponse<DailyPriceQuote>).results;
   }
 

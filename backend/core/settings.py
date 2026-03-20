@@ -28,6 +28,7 @@ DAILY_UPDATE_TIME = os.getenv("DAILY_UPDATE_TIME", "06:00")
 DEBUG = True
 
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-change-this-in-production")
+ALLOWED_HOSTS = ["*"]
 DEBUG = os.getenv("DEBUG", "True") == "True"
 CORS_ALLOW_ALL_ORIGINS = True
 

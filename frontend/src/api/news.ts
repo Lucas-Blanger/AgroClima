@@ -6,7 +6,7 @@ interface PaginatedResponse<T> {
 }
 
 export const getArticles = async (): Promise<NewsArticle[]> => {
-  const { data } = await api.get("/api/news/articles/");
+  const { data } = await api.get("/news/articles/");
 
   if (Array.isArray(data)) {
     return data as NewsArticle[];
@@ -20,6 +20,6 @@ export const getArticles = async (): Promise<NewsArticle[]> => {
 };
 
 export const getFeatured = async (): Promise<NewsArticle[]> => {
-  const { data } = await api.get("/api/news/articles/featured/");
+  const { data } = await api.get("/news/articles/featured/");
   return data as NewsArticle[];
 };

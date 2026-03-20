@@ -1,0 +1,55 @@
+services:
+  db:
+    image: postgres:16
+    container_name: agro_clima_db
+    restart: always
+    environment:
+      POSTGRES_DB: agroclima_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d agroclima_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: ./backend
+    container_name: agro_clima_api
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./backend/.env
+    environment:
+      DB_NAME: agroclima_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+    command:
+      [
+        "./wait-for-it.sh",
+        "db",
+        "gunicorn",
+        "--bind",
+        "0.0.0.0:8000",
+        "core.wsgi:application"
+      ]
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    container_name: agro_clima_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
