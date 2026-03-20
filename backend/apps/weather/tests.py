@@ -48,7 +48,7 @@ class WeatherApiTests(APITestCase):
         return WeatherForecast.objects.create(**data)
 
     def test_current_returns_404_when_empty(self):
-        response = self.client.get("/api/weather/current/")
+        response = self.client.get("/api/v1/weather/current/")
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn("detail", response.data)
@@ -61,7 +61,7 @@ class WeatherApiTests(APITestCase):
 
         latest = self._create_current(description="latest", icon="02d")
 
-        response = self.client.get("/api/weather/current/")
+        response = self.client.get("/api/v1/weather/current/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["id"], latest.id)
@@ -73,15 +73,12 @@ class WeatherApiTests(APITestCase):
         for offset in range(-2, 9):
             self._create_forecast(today + timedelta(days=offset))
 
-        response = self.client.get("/api/weather/forecast/")
+        response = self.client.get("/api/v1/weather/forecast/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 7)
 
-        expected_dates = [
-            str(today + timedelta(days=offset))
-            for offset in range(0, 7)
-        ]
+        expected_dates = [str(today + timedelta(days=offset)) for offset in range(0, 7)]
         returned_dates = [item["date"] for item in response.data]
         self.assertEqual(returned_dates, expected_dates)
 
@@ -115,7 +112,7 @@ class WeatherApiTests(APITestCase):
             is_active=True,
         )
 
-        response = self.client.get("/api/weather/alerts/")
+        response = self.client.get("/api/v1/weather/alerts/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
@@ -127,7 +124,7 @@ class WeatherApiTests(APITestCase):
         for offset in range(-10, 1):
             self._create_forecast(today + timedelta(days=offset))
 
-        response = self.client.get("/api/weather/history/?days=3")
+        response = self.client.get("/api/v1/weather/history/?days=3")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 4)

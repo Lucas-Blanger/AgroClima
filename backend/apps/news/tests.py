@@ -22,7 +22,7 @@ class NewsApiTests(APITestCase):
     def test_list_returns_paginated_data(self):
         self._create_article("Market update")
 
-        response = self.client.get("/api/news/")
+        response = self.client.get("/api/v1/news/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("count", response.data)
@@ -38,7 +38,7 @@ class NewsApiTests(APITestCase):
         first.categories.add(climate)
         second.categories.add(prices)
 
-        response = self.client.get("/api/news/?category=climate")
+        response = self.client.get("/api/v1/news/?category=climate")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
@@ -51,7 +51,7 @@ class NewsApiTests(APITestCase):
         middle = self._create_article("Middle", published_at=now - timedelta(days=1))
         latest = self._create_article("Latest", published_at=now)
 
-        response = self.client.get("/api/news/articles/latest/?limit=2")
+        response = self.client.get("/api/v1/news/articles/latest/?limit=2")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
@@ -70,14 +70,16 @@ class NewsApiTests(APITestCase):
 
         self._create_article("Regular article", is_featured=False)
 
-        response = self.client.get("/api/news/articles/featured/")
+        response = self.client.get("/api/v1/news/articles/featured/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 5)
         self.assertTrue(all(item["is_featured"] for item in response.data))
 
     def test_by_category_groups_active_categories_with_articles_only(self):
-        active_with_article = NewsCategory.objects.create(name="Weather", slug="weather")
+        active_with_article = NewsCategory.objects.create(
+            name="Weather", slug="weather"
+        )
         NewsCategory.objects.create(name="Empty", slug="empty")
         inactive_with_article = NewsCategory.objects.create(
             name="Inactive",
@@ -90,7 +92,7 @@ class NewsApiTests(APITestCase):
         active_article.categories.add(active_with_article)
         inactive_article.categories.add(inactive_with_article)
 
-        response = self.client.get("/api/news/articles/by_category/")
+        response = self.client.get("/api/v1/news/articles/by_category/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)

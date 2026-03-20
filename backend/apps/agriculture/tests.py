@@ -48,7 +48,7 @@ class AgricultureApiTests(APITestCase):
         return WeatherForecast.objects.create(**data)
 
     def test_insights_without_current_returns_nulls(self):
-        response = self.client.get("/api/agriculture/insights/")
+        response = self.client.get("/api/v1/agriculture/insights/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["alerts"], [])
@@ -69,7 +69,7 @@ class AgricultureApiTests(APITestCase):
         for offset in range(0, 7):
             self._create_forecast(today - timedelta(days=offset), rain=0.0)
 
-        response = self.client.get("/api/agriculture/insights/?days=7")
+        response = self.client.get("/api/v1/agriculture/insights/?days=7")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["history_days"], 7)
@@ -95,7 +95,7 @@ class AgricultureApiTests(APITestCase):
             wind_speed=5.0,
         )
 
-        response = self.client.get("/api/agriculture/recommendations/")
+        response = self.client.get("/api/v1/agriculture/recommendations/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("recommendations", response.data)

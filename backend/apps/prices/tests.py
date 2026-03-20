@@ -36,7 +36,9 @@ class PricesApiTests(APITestCase):
         self._create_product("Tomato", category="hortalicas", is_active=True)
         self._create_product("Soy", category="graos", is_active=False)
 
-        response = self.client.get("/api/prices/products/?category=graos&is_active=true")
+        response = self.client.get(
+            "/api/v1/prices/products/?category=graos&is_active=true"
+        )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
@@ -47,13 +49,13 @@ class PricesApiTests(APITestCase):
         self._create_product("Beans", category="graos")
         self._create_product("Apple", category="frutas")
 
-        response = self.client.get("/api/prices/products/categories/")
+        response = self.client.get("/api/v1/prices/products/categories/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(set(response.data), {"graos", "frutas"})
 
     def test_price_by_date_requires_date_parameter(self):
-        response = self.client.get("/api/prices/prices/by_date/")
+        response = self.client.get("/api/v1/prices/prices/by_date/")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("error", response.data)
@@ -65,7 +67,9 @@ class PricesApiTests(APITestCase):
         self._create_price(product, price="100.00", date=selected_date)
         self._create_price(product, price="110.00", date=timezone.now().date())
 
-        response = self.client.get(f"/api/prices/prices/by_date/?date={selected_date}")
+        response = self.client.get(
+            f"/api/v1/prices/prices/by_date/?date={selected_date}"
+        )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
@@ -79,7 +83,7 @@ class PricesApiTests(APITestCase):
         self._create_price(active_product, price="90.00", days_ago=0)
         self._create_price(inactive_product, price="70.00", days_ago=0)
 
-        response = self.client.get("/api/prices/prices/latest/")
+        response = self.client.get("/api/v1/prices/prices/latest/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
@@ -92,7 +96,9 @@ class PricesApiTests(APITestCase):
         self._create_price(product, price="10.00", days_ago=2)
         self._create_price(product, price="20.00", days_ago=1)
 
-        response = self.client.get(f"/api/prices/products/{product.id}/statistics/?days=30")
+        response = self.client.get(
+            f"/api/v1/prices/products/{product.id}/statistics/?days=30"
+        )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["product"], "Corn")
@@ -113,7 +119,7 @@ class PricesApiTests(APITestCase):
             is_active=True,
         )
 
-        response = self.client.post("/api/prices/alerts/check_alerts/", data={})
+        response = self.client.post("/api/v1/prices/alerts/check_alerts/", data={})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["total_checked"], 1)
