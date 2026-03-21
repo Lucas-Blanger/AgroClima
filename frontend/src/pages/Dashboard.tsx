@@ -8,6 +8,7 @@ import {
   type WeatherForecastDay,
 } from "../api/weather";
 import { Card } from "../components/Card";
+import { CloudRadar } from "../components/CloudRadar";
 import { ForecastCard } from "../components/ForecastCard";
 import { NewsCard } from "../components/NewsCard";
 import type { NewsArticle } from "../types/news";
@@ -475,6 +476,13 @@ export default function Dashboard() {
           </p>
         )}
       </div>
+
+      {weather && (
+        <CloudRadar
+          cloudiness={weather.clouds}
+          updatedAt={weather.updated_at}
+        />
+      )}
 
       {news.length > 0 && (
         <div>

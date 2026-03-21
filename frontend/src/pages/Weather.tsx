@@ -5,6 +5,7 @@ import {
   type WeatherForecastDay,
 } from "../api/weather";
 import { ForecastCard } from "../components/ForecastCard";
+import { CloudRadar } from "../components/CloudRadar";
 import { WeatherCard } from "../components/WeatherCard";
 import { WeatherChart } from "../components/WeatherChart";
 import type { Weather } from "../types/weather";
@@ -81,6 +82,10 @@ export default function Weather() {
       {currentWeather && (
         <>
           <WeatherCard data={currentWeather} />
+          <CloudRadar
+            cloudiness={currentWeather.clouds}
+            updatedAt={currentWeather.updated_at}
+          />
 
           <div className="rounded-2xl border border-emerald-100 bg-white/95 p-6 shadow-sm">
             <div className="mb-5 flex items-center justify-between">

@@ -49,3 +49,44 @@ h6 {
 .animate-fade-up {
   animation: fade-up 0.45s ease-out both;
 }
+
+@keyframes radar-sweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cloud-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes cloud-drift {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+}
+
+.radar-sweep {
+  animation: radar-sweep 7s linear infinite;
+}
+
+.cloud-float {
+  animation: cloud-float 6s ease-in-out infinite;
+}
+
+.cloud-drift {
+  animation: cloud-drift 8s ease-in-out infinite;
+}
