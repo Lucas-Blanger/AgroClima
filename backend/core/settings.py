@@ -162,3 +162,65 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "Documentação da API do AgroClima",
     "VERSION": "2.0.0",
 }
+
+
+# Logging
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+LOG_DIR = os.getenv("LOG_DIR")
+if not LOG_DIR:
+    LOG_DIR = str(BASE_DIR / "logs")
+elif not os.path.isabs(LOG_DIR):
+    LOG_DIR = str(BASE_DIR / LOG_DIR)
+LOG_FILE = os.getenv("LOG_FILE", "agroclima.log")
+LOG_TO_CONSOLE = os.getenv("LOG_TO_CONSOLE", "True").lower() == "true"
+LOG_PATH = os.path.join(LOG_DIR, LOG_FILE)
+LOG_HANDLERS = ["file"] + (["console"] if LOG_TO_CONSOLE else [])
+
+os.makedirs(LOG_DIR, exist_ok=True)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+        }
+    },
+    "handlers": {
+        "file": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "level": LOG_LEVEL,
+            "filename": LOG_PATH,
+            "maxBytes": 5 * 1024 * 1024,
+            "backupCount": 5,
+            "formatter": "verbose",
+            "encoding": "utf-8",
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": LOG_LEVEL,
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": LOG_HANDLERS,
+        "level": LOG_LEVEL,
+    },
+    "loggers": {
+        "django": {
+            "handlers": LOG_HANDLERS,
+            "level": LOG_LEVEL,
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": LOG_HANDLERS,
+            "level": "WARNING",
+            "propagate": False,
+        },
+        "apps": {
+            "handlers": LOG_HANDLERS,
+            "level": LOG_LEVEL,
+            "propagate": False,
+        },
+    },
+}

@@ -70,6 +70,12 @@ O AgroClima é uma plataforma moderna de monitoramento climático agrícola, que
 - 🌐 Suporte a CORS para integração com o frontend
 - 📈 Throttling e rate limiting de uso da API
 
+### Logs do Sistema
+
+- 📁 Arquivo padrão: `backend/logs/agroclima.log`
+- 🔁 Rotação automática: 5 MB por arquivo, até 5 backups
+- 🧭 Inclui logs do Django e dos módulos `apps.*`
+
 ## Stack Tecnológica
 
 ### Backend
