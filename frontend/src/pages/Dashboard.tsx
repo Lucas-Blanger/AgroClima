@@ -372,7 +372,7 @@ export default function Dashboard() {
                 </p>
               ) : (
                 <p className="mt-2 text-sm text-slate-500">
-                  Sem indicios de seca.
+                  Sem indícios de seca.
                 </p>
               )}
             </div>
