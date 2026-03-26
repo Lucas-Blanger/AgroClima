@@ -26,10 +26,15 @@ function formatAxisDate(date: string): string {
 export function WeatherChart({ data }: Props) {
   return (
     <div className="mt-8 rounded-2xl border border-emerald-100 bg-white/95 p-6 shadow-sm">
-      <h3 className="mb-4 text-lg font-semibold text-slate-900">Tendencia de temperatura</h3>
+      <h3 className="mb-4 text-lg font-semibold text-slate-900">
+        Tendência de temperatura
+      </h3>
 
       <ResponsiveContainer width="100%" height={320}>
-        <LineChart data={data} margin={{ top: 20, right: 16, left: 0, bottom: 0 }}>
+        <LineChart
+          data={data}
+          margin={{ top: 20, right: 16, left: 0, bottom: 0 }}
+        >
           <XAxis
             dataKey="date"
             tickFormatter={formatAxisDate}
