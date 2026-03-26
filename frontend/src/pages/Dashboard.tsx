@@ -311,14 +311,14 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <Card title="Insights agricolas">
+      <Card title="Insights agrícolas">
         {insightsLoading ? (
           <p className="text-slate-500">Carregando insights...</p>
         ) : insights ? (
           <div className="space-y-4">
             <div>
               <p className="text-sm font-semibold text-slate-700">
-                Recomendacoes
+                Recomendações
               </p>
               {insights.recommendations?.recommended_crops?.length ? (
                 <div className="mt-2 flex flex-wrap gap-2">
@@ -333,7 +333,7 @@ export default function Dashboard() {
                 </div>
               ) : (
                 <p className="mt-2 text-sm text-slate-500">
-                  Sem recomendacoes no momento.
+                  Sem recomendações no momento.
                 </p>
               )}
               <p className="mt-2 text-xs text-slate-500">

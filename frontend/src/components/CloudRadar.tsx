@@ -6,12 +6,60 @@ interface Props {
 }
 
 const CLOUD_POSITIONS = [
-  { id: "north", x: 28, y: 26, size: 56, baseOpacity: 0.55, drift: "cloud-float", delay: "0s" },
-  { id: "east", x: 72, y: 22, size: 44, baseOpacity: 0.4, drift: "cloud-drift", delay: "1.1s" },
-  { id: "center", x: 58, y: 55, size: 68, baseOpacity: 0.5, drift: "cloud-float", delay: "0.6s" },
-  { id: "south", x: 34, y: 72, size: 50, baseOpacity: 0.38, drift: "cloud-drift", delay: "1.6s" },
-  { id: "west", x: 20, y: 50, size: 36, baseOpacity: 0.32, drift: "cloud-float", delay: "0.9s" },
-  { id: "southeast", x: 76, y: 64, size: 40, baseOpacity: 0.34, drift: "cloud-drift", delay: "0.3s" },
+  {
+    id: "north",
+    x: 28,
+    y: 26,
+    size: 56,
+    baseOpacity: 0.55,
+    drift: "cloud-float",
+    delay: "0s",
+  },
+  {
+    id: "east",
+    x: 72,
+    y: 22,
+    size: 44,
+    baseOpacity: 0.4,
+    drift: "cloud-drift",
+    delay: "1.1s",
+  },
+  {
+    id: "center",
+    x: 58,
+    y: 55,
+    size: 68,
+    baseOpacity: 0.5,
+    drift: "cloud-float",
+    delay: "0.6s",
+  },
+  {
+    id: "south",
+    x: 34,
+    y: 72,
+    size: 50,
+    baseOpacity: 0.38,
+    drift: "cloud-drift",
+    delay: "1.6s",
+  },
+  {
+    id: "west",
+    x: 20,
+    y: 50,
+    size: 36,
+    baseOpacity: 0.32,
+    drift: "cloud-float",
+    delay: "0.9s",
+  },
+  {
+    id: "southeast",
+    x: 76,
+    y: 64,
+    size: 40,
+    baseOpacity: 0.34,
+    drift: "cloud-drift",
+    delay: "0.3s",
+  },
 ] as const;
 
 function clamp(value: number, min: number, max: number): number {
@@ -27,7 +75,7 @@ function formatHour(dateInput: string): string {
 
 function cloudLabel(value: number): string {
   if (value < 15) {
-    return "Ceu aberto";
+    return "Céu aberto";
   }
   if (value < 35) {
     return "Poucas nuvens";
@@ -43,7 +91,12 @@ function cloudLabel(value: number): string {
 
 function CloudIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 64 40" fill="none" className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 64 40"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
       <path
         d="M18.5 32h26.2a11.8 11.8 0 0 0 0-23.6 14.6 14.6 0 0 0-28.4-2.2A10.3 10.3 0 0 0 18.5 32z"
         fill="currentColor"
@@ -63,9 +116,11 @@ export function CloudRadar({ cloudiness, updatedAt }: Props) {
     <div className="rounded-2xl border border-emerald-100 bg-white/95 p-6 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-semibold text-slate-900">Radar de nuvens</h2>
+          <h2 className="text-xl font-semibold text-slate-900">
+            Radar de nuvens
+          </h2>
           <p className="mt-1 text-sm text-slate-500">
-            Visualizacao local da cobertura de nuvens.
+            Visualização local da cobertura de nuvens.
           </p>
         </div>
         <div className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
@@ -127,7 +182,7 @@ export function CloudRadar({ cloudiness, updatedAt }: Props) {
         <div className="space-y-4 text-sm text-slate-600">
           <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">
-              Condicao atual
+              Condição atual
             </p>
             <p className="mt-2 text-lg font-semibold text-slate-900">
               {cloudLabel(normalizedCloudiness)}
@@ -148,7 +203,7 @@ export function CloudRadar({ cloudiness, updatedAt }: Props) {
               </p>
             </div>
             <div className="rounded-xl border border-slate-200/70 bg-white/80 p-3">
-              <p className="text-xs text-slate-500">Qualidade do ceu</p>
+              <p className="text-xs text-slate-500">Qualidade do céu</p>
               <p className="mt-1 font-semibold text-slate-900">
                 {cloudLabel(normalizedCloudiness)}
               </p>
