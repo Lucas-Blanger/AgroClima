@@ -66,6 +66,14 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
+function normalizeCloudiness(value: number): number {
+  if (!Number.isFinite(value)) {
+    return 0;
+  }
+
+  return clamp(Math.round(value), 0, 100);
+}
+
 function formatHour(dateInput: string): string {
   return new Intl.DateTimeFormat("pt-BR", {
     hour: "2-digit",
@@ -106,7 +114,7 @@ function CloudIcon({ className }: { className?: string }) {
 }
 
 export function CloudRadar({ cloudiness, updatedAt }: Props) {
-  const normalizedCloudiness = clamp(Math.round(cloudiness), 0, 100);
+  const normalizedCloudiness = normalizeCloudiness(cloudiness);
   const density = normalizedCloudiness / 100;
   const cloudCount = Math.max(1, Math.round(1 + density * 5));
   const visibleClouds = CLOUD_POSITIONS.slice(0, cloudCount);
@@ -130,7 +138,7 @@ export function CloudRadar({ cloudiness, updatedAt }: Props) {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,280px)_1fr]">
         <div className="flex items-center justify-center">
-          <div className="relative aspect-square w-64 sm:w-72">
+          <div className="relative aspect-square w-64 overflow-hidden rounded-full sm:w-72">
             <div
               className="absolute inset-0 rounded-full"
               style={{

@@ -487,7 +487,7 @@ export default function Dashboard() {
       {news.length > 0 && (
         <div>
           <h2 className="mb-6 text-2xl font-bold text-slate-900">
-            Ultimas notícias
+            Últimas notícias
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {news.map((article, index) => (
