@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from urllib.parse import urlsplit
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -30,8 +31,6 @@ DEBUG = True
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-change-this-in-production")
 ALLOWED_HOSTS = ["*"]
 DEBUG = os.getenv("DEBUG", "True") == "True"
-CORS_ALLOW_ALL_ORIGINS = True
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -132,9 +131,17 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
+def _normalize_origin(url: str) -> str:
+    parsed = urlsplit(url.strip())
+    if not parsed.scheme or not parsed.netloc:
+        return url.strip().rstrip("/")
+    return f"{parsed.scheme}://{parsed.netloc}"
+
+
 # CORS Settings
 CORS_ALLOWED_ORIGINS = [
-    os.getenv("FRONTEND_URL", "http://localhost:3000"),
+    _normalize_origin(os.getenv("FRONTEND_URL")),
 ]
 CORS_ALLOW_CREDENTIALS = True
 
