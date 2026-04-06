@@ -141,7 +141,7 @@ def _normalize_origin(url: str) -> str:
 
 # CORS Settings
 CORS_ALLOWED_ORIGINS = [
-    _normalize_origin(os.getenv("FRONTEND_URL")),
+    _normalize_origin(os.getenv("FRONTEND_URL", "http://localhost:5173")),
 ]
 CORS_ALLOW_CREDENTIALS = True
 
