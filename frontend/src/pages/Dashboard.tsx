@@ -215,6 +215,8 @@ export default function Dashboard() {
     fetchNews();
   }, []);
 
+  const insightAlerts = Array.isArray(insights?.alerts) ? insights.alerts : [];
+
   return (
     <section className="space-y-8">
       <header className="relative overflow-hidden rounded-3xl border border-emerald-100 bg-linear-to-br from-emerald-700 via-emerald-600 to-teal-700 px-6 py-8 text-white shadow-xl sm:px-8">
@@ -343,9 +345,9 @@ export default function Dashboard() {
 
             <div>
               <p className="text-sm font-semibold text-slate-700">Alertas</p>
-              {insights.alerts.length > 0 ? (
+              {insightAlerts.length > 0 ? (
                 <ul className="mt-2 space-y-2 text-sm text-slate-600">
-                  {insights.alerts.map((alert, index) => (
+                  {insightAlerts.map((alert, index) => (
                     <li
                       key={`${alert.type}-${index}`}
                       className="rounded-lg border border-amber-100 bg-amber-50/50 px-3 py-2"
@@ -430,7 +432,7 @@ export default function Dashboard() {
               return (
                 <article
                   key={quote.product_id}
-                  className="rounded-xl border border-amber-100 bg-gradient-to-br from-white to-amber-50/40 p-4 shadow-sm"
+                  className="rounded-xl border border-amber-100 bg-linear-to-br from-white to-amber-50/40 p-4 shadow-sm"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">

@@ -9,6 +9,9 @@ interface Props {
 
 export function NewsCard({ article, index = 0 }: Props) {
   const cleanSummary = plainTextFromHtml(article.summary);
+  const categoryNames = Array.isArray(article.category_names)
+    ? article.category_names
+    : [];
 
   return (
     <a
@@ -25,7 +28,7 @@ export function NewsCard({ article, index = 0 }: Props) {
           className="h-48 w-full object-cover"
         />
       ) : (
-        <div className="flex h-48 items-center justify-center bg-gradient-to-br from-emerald-100 via-lime-50 to-cyan-100 text-sm font-semibold text-emerald-800">
+        <div className="flex h-48 items-center justify-center bg-linear-to-br from-emerald-100 via-lime-50 to-cyan-100 text-sm font-semibold text-emerald-800">
           AgroClima News
         </div>
       )}
@@ -48,9 +51,9 @@ export function NewsCard({ article, index = 0 }: Props) {
           {cleanSummary || "Sem descricao disponivel."}
         </p>
 
-        {article.category_names.length > 0 && (
+        {categoryNames.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-2">
-            {article.category_names.slice(0, 3).map((category) => (
+            {categoryNames.slice(0, 3).map((category) => (
               <span
                 key={category}
                 className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-xs text-slate-600"
